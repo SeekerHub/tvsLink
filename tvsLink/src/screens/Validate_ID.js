@@ -31,7 +31,7 @@ const Validate_ID = ({navigation}) => {
         fetch('https://api.ocr.space/parse/imageurl?apikey=96462e4a0e88957&url=https://4.imimg.com/data4/UP/CC/ANDROID-38712709/product-500x500.jpeg&language=eng&isOverlayRequired=true')
         	.then(results => results.json())
         	.then(body => {
-            console.log(body.ParsedResults[0].ParsedText);
+            console.log(body);
             setText(body.ParsedResults[0].ParsedText)
           }
         );

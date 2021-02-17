@@ -24,15 +24,31 @@ const Chasis = ({navigation}) => {
       setIsLoading(true);
 
       try {
-        let temp = path.uri
-        let temp_2 = temp.split('/').pop()
-        console.log(temp_2)
-        console.log(temp)
-        fetch('https://api.ocr.space/parse/imageurl?apikey=96462e4a0e88957&url='+temp_2+'&language=eng&isOverlayRequired=true&filetype=jpg')
+          let localUri = path.uri;
+          let filename = localUri.split('/').pop();
+
+          // Infer the type of the image
+          let match = /\.(\w+)$/.exec(filename);
+          let type = match ? `image/${match[1]}` : `image`;
+
+          // Upload the image using the fetch and FormData APIs
+          let formData = new FormData();
+          // Assume "photo" is the name of the form field the server expects
+          formData.append('file', { uri: localUri, name: filename, type });
+
+          fetch('https://api.ocr.space/Parse/Image', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              Apikey: "96462e4a0e88957",
+              'content-type': 'multipart/form-data',
+            },
+          })
           .then(results => results.json())
           .then(body => {
             console.log(body);
-            setText(body.ParsedResults[0].ParsedText)
+            setText(body.ParsedResults[0].ParsedText);
+            console.log(body.ParsedResults[0].ParsedText);
           }
         );
 
@@ -78,7 +94,7 @@ const Chasis = ({navigation}) => {
       });
       // console.log(snapshot.uri);
       setImgSrc(snapshot.uri);
-      await recognizeTextFromImage(snapshot.uri);
+      await recognizeTextFromImage(snapshot);
     }catch(err){
       if (err.message !== 'User cancelled image selection') {
         console.error(err);

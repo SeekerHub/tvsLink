@@ -21,6 +21,7 @@
     "expo-status-bar": "~1.0.2",
     "firebase": "^8.2.0",
     "ocr-space-api": "^1.0.1",
+    "ocr-space-api-wrapper": "^1.0.5",
     "react": "16.13.1",
     "react-devtools": "^4.10.1",
     "react-dom": "16.13.1",
