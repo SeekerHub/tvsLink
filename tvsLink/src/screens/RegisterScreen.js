@@ -46,7 +46,7 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <Logo />
+      <View styles = {styles.logo}><Logo /></View>
       <Header>Create Account</Header>
       <TextInput
         label="Name"
@@ -97,6 +97,12 @@ const RegisterScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  logo : {
+    ...StyleSheet.absoluteFillObject,
+    alignSelf: 'flex-start',
+    marginTop: 15,
+    position: 'absolute',
+  },
   row: {
     flexDirection: 'row',
     marginTop: 4,

@@ -5,13 +5,10 @@ import ProgressCircle from 'react-native-progress/Circle';
 import Button from '../components/Button'
 import Background from '../components/Background'
 import Header from '../components/Header'
-import TextInput from '../components/TextInput'
-// import ocr from '/home/droid/Documents/tvs/ocr_rn/example/src/components/api.js';
 import * as MediaLibrary from 'expo-media-library';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import Logo from '../components/Logo_page'
-
 
 const Validate_ID = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,28 +20,65 @@ const Validate_ID = ({navigation}) => {
 
 
 
-  const recognizeTextFromImage = async (path) => {
-      setIsLoading(true);
 
-      try {
-        console.log('https://api.ocr.space/parse/imageurl?apikey=96462e4a0e88957&url='+path+'&language=eng&isOverlayRequired=true')
-        fetch('https://api.ocr.space/parse/imageurl?apikey=96462e4a0e88957&url=https://4.imimg.com/data4/UP/CC/ANDROID-38712709/product-500x500.jpeg&language=eng&isOverlayRequired=true')
-        	.then(results => results.json())
-        	.then(body => {
-            console.log(body);
-            setText(body.ParsedResults[0].ParsedText)
-          }
-        );
+    const recognizeTextFromImage = async (path) => {
+        setIsLoading(true);
 
+        try {
+            let localUri = path.uri;
+            let filename = localUri.split('/').pop();
+            // Infer the type of the image
+            let match = /\.(\w+)$/.exec(filename);
+            let type = match ? `image/${match[1]}` : `image`;
 
-      } catch (err) {
-        console.error(err);
-        setText('Try Again');
-      }
+            // Upload the image using the fetch and FormData APIs
+            let formData = new FormData();
+            // Assume "photo" is the name of the form field the server expects
+            formData.append('file', { uri: localUri, name: filename, type });
 
-      setIsLoading(false);
-      setProgress(0);
+            fetch('https://api.ocr.space/Parse/Image', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                Apikey: "96462e4a0e88957",
+                'content-type': 'multipart/form-data',
+              },
+            })
+            .then(results => results.json())
+            .then(body => {
+              console.log(chosen);
+              if(chosen==='PAN'){
+                const str = body.ParsedResults[0].ParsedText;
+                const patt = str.search('Number');
+                const req = str.substring(patt+8, patt+8+10);
+                setText(req);
+                console.log(req);
+              }
+              if(chosen==='AAD'){
+                const str = body.ParsedResults[0].ParsedText;
+                const req = str.substring(str.length-18);
+                setText(req);
+                console.log(req);
+              }
+              if(chosen=='DL'){
+                console.log("Comming Soon");
+              }
+            });
+
+        } catch (err) {
+          console.error(err);
+          setText('Try Again');
+        }
+
+        setIsLoading(false);
+        setProgress(0);
     };
+
+
+    const needed = () => {
+      let req = text;
+      console.log();
+    }
 
 
   const recognizeFromPicker = async () => {
@@ -62,8 +96,9 @@ const Validate_ID = ({navigation}) => {
         if(!pickerResult.cancelled){
             console.log(pickerResult.uri);
             setImgSrc(pickerResult.uri);
+            await recognizeTextFromImage(pickerResult)
         }
-        await recognizeTextFromImage(pickerResult.uri)
+
       }catch(err){
         if (err.message !== 'User cancelled image selection') {
           console.error(err);
@@ -76,12 +111,15 @@ const Validate_ID = ({navigation}) => {
       let snapshot = await ImagePicker.launchCameraAsync({
         base64: true,
       });
-      console.log(snapshot.uri);
-      setImgSrc(snapshot.uri);
-      // await recognizeTextFromImage(snapshot.uri);
+      if(!snapshot.cancelled){
+          console.log(pickerResult.uri);
+          setImgSrc(pickerResult.uri);
+          await recognizeTextFromImage(pickerResult)
+      }
     }catch(err){
       if (err.message !== 'User cancelled image selection') {
         console.error(err);
+        alert('Please Try Again');
       }
     }
   };
@@ -95,23 +133,26 @@ const Validate_ID = ({navigation}) => {
       <Header>Please Upload a Valid ID Proof</Header>
       </View >
       <View style = {styles.options} >
-
-
-      <Picker
+    <Picker
         selectedValue={chosen}
         style={styles.dropdown}
         onValueChange={(itemValue, itemIndex) => setChosen(itemValue) }>
-      <Picker.Item label="PAN Card" value="pc" />
-      <Picker.Item label="Aadhar Card" value="ac" />
-      <Picker.Item label="Driving License" value="dl" />
+      <Picker.Item label="Please Select an Option" value="No Option Chosen" />
+      <Picker.Item label="PAN Card" value="PAN" />
+      <Picker.Item label="Aadhar Card" value="AAD" />
+      <Picker.Item label="Driving License" value="DL" />
 
       </Picker>
+      </View>
+      <View style = {styles.viewtext}><Text style = {styles.text}>{text}</Text></View>
+
 
       <Button mode="outlined" style = {styles.Upload}  onPress={() => recognizeFromPicker()}>
         Upload
       </Button>
-      </View>
-      <Button mode="outlined" style = {styles.Submit} onPress={() => {console.log("Submitted"); navigation.navigate("Bluetooth")}}>
+
+
+      <Button mode="contained" style = {styles.Submit} onPress={() => {console.log("Submitted"); navigation.navigate("Home")}}>
         Submit
       </Button>
 
@@ -133,12 +174,25 @@ const styles = StyleSheet.create({
   },
   dropdown : {
   },
+  viewtext :{
+    top : -30,
+    width : 300,
+    height : 35,
+    alignItems : 'center',
+    borderWidth: 2,
+    borderColor: "#E8E8E8",
+    borderRadius: 6,
+  },
+  text :{
+    fontSize: 20,
+    fontWeight: "bold"
+  },
   head :{
-    top : 70
+    top : 90
   },
   Submit : {
     marginBottom : 0,
-    top : 50
+    top : 5
   },
   logo : {
     ...StyleSheet.absoluteFillObject,
@@ -148,29 +202,8 @@ const styles = StyleSheet.create({
   },
   Upload : {
     marginBottom : 0,
-    top : 190,
+    top : 10,
   }
 });
 
 export default Validate_ID;
-
-
-
-
-// <DropDownPicker
-//     items={[
-//         {label: 'USA', value: 'usa', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true},
-//         {label: 'UK', value: 'uk', icon: () => <Icon name="flag" size={18} color="#900" />},
-//         {label: 'France', value: 'france', icon: () => <Icon name="flag" size={18} color="#900" />},
-//     ]}
-//     defaultValue={this.state.country}
-//     containerStyle={{height: 40}}
-//     style={{backgroundColor: '#fafafa'}}
-//     itemStyle={{
-//         justifyContent: 'flex-start'
-//     }}
-//     dropDownStyle={{backgroundColor: '#fafafa'}}
-//     onChangeItem={item => this.setState({
-//         country: item.value
-//     })}
-// />

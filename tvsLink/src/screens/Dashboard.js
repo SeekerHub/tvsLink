@@ -23,7 +23,7 @@ const Dashboard = ({ navigation }) => {
       onChangeText={text => setText(text)}
 
     />
-    <Button mode="outlined" onPress={() => navigation.navigate('Chasis')}>
+    <Button mode="contained" onPress={() => navigation.navigate('Chasis')}>
       Lets Begin
     </Button>
 

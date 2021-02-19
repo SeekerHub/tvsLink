@@ -6,7 +6,6 @@ import Button from '../components/Button'
 import Background from '../components/Background'
 import Header from '../components/Header'
 import TextInput from '../components/TextInput'
-// import ocr from '/home/droid/Documents/tvs/ocr_rn/example/src/components/api.js';
 import * as MediaLibrary from 'expo-media-library';
 import Logo from '../components/Logo_page'
 
@@ -77,8 +76,9 @@ const Chasis = ({navigation}) => {
         if(!pickerResult.cancelled){
             console.log("picker-->", pickerResult.uri)
             setImgSrc(pickerResult.uri);
+            await recognizeTextFromImage(pickerResult)
         }
-        await recognizeTextFromImage(pickerResult)
+
       }catch(err){
         if (err.message !== 'User cancelled image selection') {
           console.error(err);
@@ -118,7 +118,7 @@ const Chasis = ({navigation}) => {
         Upload
       </Button>
       </View>
-      <Button mode="outlined" style = {styles.Upload} onPress={() => {console.log("Submitted"); navigation.navigate("Bluetooth")}}>
+      <Button mode="contained" style = {styles.Upload} onPress={() => {console.log("Submitted"); navigation.navigate("Bluetooth")}}>
         Submit
       </Button>
 
