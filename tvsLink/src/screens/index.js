@@ -9,3 +9,4 @@ export { default as Bluetooth } from './Bluetooth'
 export { default as OBD_details } from './OBD_details';
 export { default as Validate_ID } from './Validate_ID';
 export { default as Home } from './Home';
+export { default as SplashScreen } from './SplashScreen';

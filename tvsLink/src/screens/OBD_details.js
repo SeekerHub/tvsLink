@@ -47,8 +47,8 @@ const OBD_details = ({navigation}) => {
         <DataTable.Cell numeric>1000</DataTable.Cell>
       </DataTable.Row>
       <DataTable.Row>
-        <DataTable.Cell>Warrantly</DataTable.Cell>
-        <DataTable.Cell numeric>YES</DataTable.Cell>
+        <DataTable.Cell>Warranty</DataTable.Cell>
+        <DataTable.Cell numeric>237</DataTable.Cell>
       </DataTable.Row>
 
       <DataTable.Pagination

@@ -9,14 +9,11 @@ import TextInput from '../components/TextInput'
 import * as MediaLibrary from 'expo-media-library';
 import Logo from '../components/Logo_page'
 
-
-
 const Chasis = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState('');
-
 
 
   const recognizeTextFromImage = async (path) => {
@@ -108,7 +105,7 @@ const Chasis = ({navigation}) => {
     <Background>
     <View style = {styles.logo}><Logo /></View>
       <View style = {styles.head} >
-      <Header>Please Upload the Chasis Number</Header>
+      <Header >Please Upload the Chasis Number</Header>
       </View >
       <View style = {styles.options} >
       <Button mode="outlined"  onPress={() => recognizeFromCamera()}>

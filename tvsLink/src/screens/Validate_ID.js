@@ -46,19 +46,20 @@ const Validate_ID = ({navigation}) => {
             })
             .then(results => results.json())
             .then(body => {
-              console.log(chosen);
+              // console.log(chosen);
               if(chosen==='PAN'){
                 const str = body.ParsedResults[0].ParsedText;
                 const patt = str.search('Number');
                 const req = str.substring(patt+8, patt+8+10);
                 setText(req);
                 console.log(req);
+                VerifyPan();
               }
               if(chosen==='AAD'){
                 const str = body.ParsedResults[0].ParsedText;
                 const req = str.substring(str.length-18);
                 setText(req);
-                console.log(req);
+                // console.log(req);
               }
               if(chosen=='DL'){
                 console.log("Comming Soon");
@@ -73,6 +74,19 @@ const Validate_ID = ({navigation}) => {
         setIsLoading(false);
         setProgress(0);
     };
+  const VerifyPan = () => {
+    fetch("https://staging.eko.in:25004/ekoapi/v1/pan/verify", {
+      body: `pan_number=${text}&purpose=1&initiator_id=9971771929&purpose_desc=onboarding&customer_mobile=8654547658`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Developer_key: "becbbce45f79c6f5109f848acd540567",
+        "Secret-Key": "MC6dKW278tBef+AuqL/5rW2K3WgOegF0ZHLW/FriZQw=",
+        "Secret-Key-Timestamp": "1516705204593"
+      },
+      method: "POST"
+    }).then(response => response.json())
+    .then(data => console.log(data));
+  }
 
 
     const needed = () => {

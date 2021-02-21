@@ -24,6 +24,7 @@ import {
   OBD_details,
   Validate_ID,
   Home,
+  SplashScreen,
 
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
@@ -41,7 +42,7 @@ const Main = () => {
   return (
     <Provider theme={theme}>
         <Stack.Navigator
-          initialRouteName="AuthLoadingScreen"
+          initialRouteName="SplashScreen"
           screenOptions={{
             headerShown: false,
           }}
@@ -50,6 +51,7 @@ const Main = () => {
             name="AuthLoadingScreen"
             component={AuthLoadingScreen}
           />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />

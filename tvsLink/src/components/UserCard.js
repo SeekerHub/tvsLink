@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(211,210,210,1)",
     borderRadius: 9,
+    opacity: 20,
     backgroundColor: "#E8E8E8",
   },
   image: {
