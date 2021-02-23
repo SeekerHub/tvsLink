@@ -65,7 +65,8 @@ const Chasis = ({navigation}) => {
           .then(body => {
             console.log(body);
             setText(body.ParsedResults[0].ParsedText);
-            console.log(body.ParsedResults[0].ParsedText);
+            console.log((body.ParsedResults[0].ParsedText).length);
+            VerifyNumber(body.ParsedResults[0].ParsedText);
           }
         );
 
@@ -78,7 +79,13 @@ const Chasis = ({navigation}) => {
       setIsLoading(false);
       setProgress(0);
   };
-
+  const VerifyNumber = (temp) => {
+    if(temp.length==12)
+      alert('Congratulation! Verified')
+    else {
+      alert("Please Enter a Valid ID or Upload Again")
+    }
+  }
   const recognizeFromPicker = async () => {
 
       let permissionResult = await MediaLibrary.requestPermissionsAsync();

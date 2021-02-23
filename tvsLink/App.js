@@ -1,4 +1,3 @@
-<script src="http://localhost:8097"></script>
 import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { Provider } from 'react-native-paper'
@@ -29,8 +28,9 @@ import {
   Success_details,
   Success_chasis,
   About,
-  Profile,
-
+  Settings,
+  Support,
+  SideMenu,
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
 
@@ -81,12 +81,13 @@ const Main = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Main">
+    <NavigationContainer >
+      <Drawer.Navigator initialRouteName="Main" drawerContent={ props => <SideMenu {...props} /> }>
         <Drawer.Screen name="Main" component={Main} />
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="About" component={About} />
-        <Drawer.Screen name="Profile" component={Profile} />
+        <Drawer.Screen name="Settings" component={Settings} />
+        <Drawer.Screen name="Support" component={Support} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

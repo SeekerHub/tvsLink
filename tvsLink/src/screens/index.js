@@ -14,4 +14,6 @@ export { default as Success } from './Success';
 export { default as Success_chasis } from './Success_chasis';
 export { default as Success_details } from './Success_details';
 export { default as About } from './About';
-export { default as Profile } from './Profile';
+export { default as Settings } from './Settings';
+export { default as Support } from './Support';
+export { default as SideMenu } from './SideMenu';

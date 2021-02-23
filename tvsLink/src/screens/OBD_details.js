@@ -9,14 +9,8 @@ import Header from '../components/Header'
 import { DataTable } from 'react-native-paper';
 import {
   useFonts,
-  Ubuntu_300Light,
-  Ubuntu_300Light_Italic,
   Ubuntu_400Regular,
-  Ubuntu_400Regular_Italic,
   Ubuntu_500Medium,
-  Ubuntu_500Medium_Italic,
-  Ubuntu_700Bold,
-  Ubuntu_700Bold_Italic
 } from '@expo-google-fonts/ubuntu'
 import AppLoading from 'expo-app-loading';
 
@@ -27,8 +21,6 @@ const OBD_details = ({navigation}) => {
   const [fontsLoaded, error] = useFonts({
     Ubuntu_400Regular,
     Ubuntu_500Medium,
-    Ubuntu_500Medium_Italic,
-    Ubuntu_700Bold,
   })
   if (!fontsLoaded) {
     return <AppLoading />;
