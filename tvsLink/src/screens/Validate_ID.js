@@ -9,14 +9,35 @@ import * as MediaLibrary from 'expo-media-library';
 import Icon from 'react-native-vector-icons/Feather';
 import {Picker} from '@react-native-picker/picker';
 import Logo from '../components/Logo_page'
+import {
+  useFonts,
+  Ubuntu_300Light,
+  Ubuntu_300Light_Italic,
+  Ubuntu_400Regular,
+  Ubuntu_400Regular_Italic,
+  Ubuntu_500Medium,
+  Ubuntu_500Medium_Italic,
+  Ubuntu_700Bold,
+  Ubuntu_700Bold_Italic
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
 const Validate_ID = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState('');
+  const [status, setStatus] = useState(false)
   const [chosen, setChosen] = useState('Please Select an Option');
-
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_500Medium,
+    Ubuntu_500Medium_Italic,
+    Ubuntu_700Bold,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
 
 
@@ -46,22 +67,28 @@ const Validate_ID = ({navigation}) => {
             })
             .then(results => results.json())
             .then(body => {
-              // console.log(chosen);
+              console.log(body);
               if(chosen==='PAN'){
                 const str = body.ParsedResults[0].ParsedText;
                 const patt = str.search('Number');
                 const req = str.substring(patt+8, patt+8+10);
                 setText(req);
-                console.log(req);
-                VerifyPan();
+                // console.log(req);
+                // console.log('Executed');
+                VerifyPan(req);
               }
-              if(chosen==='AAD'){
+              else if(chosen==='AAD'){
                 const str = body.ParsedResults[0].ParsedText;
                 const req = str.substring(str.length-18);
                 setText(req);
-                // console.log(req);
+                console.log(req.length);
+                if(req.length==18)
+                  alert('Congratulations! Verified')
+                else
+                  alert("Please Enter a Valid ID or Upload Again")
+
               }
-              if(chosen=='DL'){
+              else if(chosen=='DL'){
                 console.log("Comming Soon");
               }
             });
@@ -74,9 +101,11 @@ const Validate_ID = ({navigation}) => {
         setIsLoading(false);
         setProgress(0);
     };
-  const VerifyPan = () => {
-    fetch("https://staging.eko.in:25004/ekoapi/v1/pan/verify", {
-      body: `pan_number=${text}&purpose=1&initiator_id=9971771929&purpose_desc=onboarding&customer_mobile=8654547658`,
+
+  const VerifyPan = async (temp) => {
+    // console.log('Verify_exec', temp);
+    const resp = await fetch("https://staging.eko.in:25004/ekoapi/v1/pan/verify", {
+      body: `pan_number=${temp}&purpose=1&initiator_id=9971771929&purpose_desc=onboarding&customer_mobile=8654547658`,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Developer_key: "becbbce45f79c6f5109f848acd540567",
@@ -84,15 +113,22 @@ const Validate_ID = ({navigation}) => {
         "Secret-Key-Timestamp": "1516705204593"
       },
       method: "POST"
-    }).then(response => response.json())
-    .then(data => console.log(data));
-  }
+    });
+    const result = await resp.json();
+    console.log(result.message);
+    need(result.message);
+}
 
 
-    const needed = () => {
-      let req = text;
-      console.log();
+  const need = (report) => {
+    // console.log('Need', report);
+    if(report=='PAN verification successful')
+      alert('Congratulation! Verified')
+    else {
+      alert("Please Enter a Valid ID or Upload Again")
     }
+
+  }
 
 
   const recognizeFromPicker = async () => {
@@ -108,7 +144,6 @@ const Validate_ID = ({navigation}) => {
             base64: true,
           });
         if(!pickerResult.cancelled){
-            console.log(pickerResult.uri);
             setImgSrc(pickerResult.uri);
             await recognizeTextFromImage(pickerResult)
         }
@@ -126,7 +161,6 @@ const Validate_ID = ({navigation}) => {
         base64: true,
       });
       if(!snapshot.cancelled){
-          console.log(pickerResult.uri);
           setImgSrc(pickerResult.uri);
           await recognizeTextFromImage(pickerResult)
       }
@@ -140,11 +174,12 @@ const Validate_ID = ({navigation}) => {
 
 
 
+
   return (
     <Background>
     <View style = {styles.logo}><Logo /></View>
       <View style = {styles.head} >
-      <Header>Please Upload a Valid ID Proof</Header>
+      <Header style = {{ fontFamily: 'Ubuntu_500Medium', fontSize : 25, textAlignVertical: "center",textAlign: "center", top : -110}}>Please Upload a Valid ID Proof</Header>
       </View >
       <View style = {styles.options} >
     <Picker
@@ -161,12 +196,14 @@ const Validate_ID = ({navigation}) => {
       <View style = {styles.viewtext}><Text style = {styles.text}>{text}</Text></View>
 
 
+      <Button mode="outlined" style = {styles.Upload}  onPress={() => recognizeFromCamera()}>
+        Camera
+      </Button>
       <Button mode="outlined" style = {styles.Upload}  onPress={() => recognizeFromPicker()}>
         Upload
       </Button>
 
-
-      <Button mode="contained" style = {styles.Submit} onPress={() => {console.log("Submitted"); navigation.navigate("Home")}}>
+      <Button mode="contained" style = {styles.Submit} onPress={() => {console.log("Submitted"); navigation.navigate("Success")}}>
         Submit
       </Button>
 
@@ -180,16 +217,17 @@ const Validate_ID = ({navigation}) => {
 const styles = StyleSheet.create({
   options : {
     width : 300,
-    height : 60,
+    height : 50,
     borderWidth: 2,
     borderColor: "#E8E8E8",
     borderRadius: 2,
-    marginBottom: 250,
+    marginBottom: 230,
   },
   dropdown : {
+    fontFamily : 'Ubuntu_400Regular'
   },
   viewtext :{
-    top : -30,
+    top : -50,
     width : 300,
     height : 35,
     alignItems : 'center',
@@ -216,7 +254,7 @@ const styles = StyleSheet.create({
   },
   Upload : {
     marginBottom : 0,
-    top : 10,
+    top : -50,
   }
 });
 

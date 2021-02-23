@@ -8,13 +8,34 @@ import Header from '../components/Header'
 import TextInput from '../components/TextInput'
 import * as MediaLibrary from 'expo-media-library';
 import Logo from '../components/Logo_page'
+import {
+  useFonts,
+  Ubuntu_300Light,
+  Ubuntu_300Light_Italic,
+  Ubuntu_400Regular,
+  Ubuntu_400Regular_Italic,
+  Ubuntu_500Medium,
+  Ubuntu_500Medium_Italic,
+  Ubuntu_700Bold,
+  Ubuntu_700Bold_Italic
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
+
 
 const Chasis = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imgSrc, setImgSrc] = useState(null);
   const [text, setText] = useState('');
-
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_500Medium,
+    Ubuntu_500Medium_Italic,
+    Ubuntu_700Bold,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const recognizeTextFromImage = async (path) => {
       setIsLoading(true);
@@ -105,9 +126,10 @@ const Chasis = ({navigation}) => {
     <Background>
     <View style = {styles.logo}><Logo /></View>
       <View style = {styles.head} >
-      <Header >Please Upload the Chasis Number</Header>
+      <Header style={{ fontFamily: 'Ubuntu_700Bold', fontSize : 25, textAlignVertical: "center",textAlign: "center"}} >Please Upload the Chasis Number</Header>
       </View >
       <View style = {styles.options} >
+      <View style = {styles.viewtext}><Text style = {styles.text}>{text}</Text></View>
       <Button mode="outlined"  onPress={() => recognizeFromCamera()}>
         Use Camera
       </Button>
@@ -115,7 +137,7 @@ const Chasis = ({navigation}) => {
         Upload
       </Button>
       </View>
-      <Button mode="contained" style = {styles.Upload} onPress={() => {console.log("Submitted"); navigation.navigate("Bluetooth")}}>
+      <Button mode="contained" style = {styles.Upload} onPress={() => {console.log("Submitted"); navigation.navigate("Success_chasis")}}>
         Submit
       </Button>
 
@@ -131,6 +153,19 @@ const styles = StyleSheet.create({
     width : '100%',
     marginBottom : 120
   },
+  viewtext :{
+    top : 140,
+    width : 300,
+    height : 35,
+    alignItems : 'center',
+    borderWidth: 2,
+    borderColor: "#E8E8E8",
+    borderRadius: 6,
+  },
+  text :{
+    fontSize: 20,
+    fontWeight: "bold"
+  },
   logo : {
     ...StyleSheet.absoluteFillObject,
     alignSelf: 'flex-start',
@@ -138,7 +173,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   head :{
-    top : 70
+    top : -50,
+    alignItems : 'center',
   },
   Upload : {
     marginBottom : 50

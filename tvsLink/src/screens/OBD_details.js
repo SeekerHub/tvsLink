@@ -7,21 +7,41 @@ import Background from '../components/Background'
 import Logo from '../components/Logo_page'
 import Header from '../components/Header'
 import { DataTable } from 'react-native-paper';
+import {
+  useFonts,
+  Ubuntu_300Light,
+  Ubuntu_300Light_Italic,
+  Ubuntu_400Regular,
+  Ubuntu_400Regular_Italic,
+  Ubuntu_500Medium,
+  Ubuntu_500Medium_Italic,
+  Ubuntu_700Bold,
+  Ubuntu_700Bold_Italic
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
 
 
 const OBD_details = ({navigation}) => {
   const [text, setText] = useState('');
-
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_500Medium,
+    Ubuntu_500Medium_Italic,
+    Ubuntu_700Bold,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <Background>
     <View style = {styles.logo}><Logo /></View>
     <View style = {styles.head} >
-    <Header>Details Received</Header>
+    <Header style={{ fontFamily: 'Ubuntu_500Medium', fontSize : 35, right : -3, top : -130}}>Details Received</Header>
     </View >
     <DataTable style = {styles.table}>
-      <DataTable.Header>
-        <DataTable.Title>Vehicles Details</DataTable.Title>
+      <DataTable.Header style={{ fontSize : 10}}>
+        <DataTable.Title style={{ fontFamily: 'Ubuntu_500Medium', fontSize : 20}}>Vehicles Details</DataTable.Title>
         <DataTable.Title numeric>Data</DataTable.Title>
       </DataTable.Header>
 
@@ -61,7 +81,7 @@ const OBD_details = ({navigation}) => {
       />
       </DataTable>
 
-      <Button mode="contained" style={styles.submit}  onPress={() => navigation.navigate("Validate_ID")}>
+      <Button mode="contained" style={styles.submit}  onPress={() => navigation.navigate("Success_details")}>
         Submit
       </Button>
     </Background>
@@ -85,6 +105,7 @@ const styles = StyleSheet.create({
   },
   table :{
     top : 20,
+    fontFamily : 'Ubuntu_400Regular',
   },
   inputs:{
     width : '100%',

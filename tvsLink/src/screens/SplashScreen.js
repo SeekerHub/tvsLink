@@ -6,7 +6,7 @@ const SplashScreen = ({navigation}) =>{
 
     setTimeout(() => {
         navigation.replace('AuthLoadingScreen');
-    },20000);
+    },2000);
     return (
         <ImageBackground style={{flex:1}} source={require('../assets/splash_b.png')}>
         </ImageBackground>

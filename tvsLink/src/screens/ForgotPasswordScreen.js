@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Background from '../components/Background'
 import BackButton from '../components/BackButton'
+import { View } from 'react-native'
 import Logo from '../components/Logo'
 import Header from '../components/Header'
 import TextInput from '../components/TextInput'
@@ -8,11 +9,23 @@ import Button from '../components/Button'
 import { emailValidator } from '../helpers/emailValidator'
 import { sendEmailWithPassword } from '../api/auth-api'
 import Toast from '../components/Toast'
+import {
+  useFonts,
+  Ubuntu_500Medium,
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState({ value: '', type: '' })
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_500Medium,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
 
   const sendResetPasswordEmail = async () => {
     const emailError = emailValidator(email.value)
@@ -36,8 +49,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Restore Password</Header>
+      <View style = {{ top : -70 }}><Logo /></View>
+      <Header style = {{ fontFamily: 'Ubuntu_500Medium', fontSize : 30, textAlignVertical: "center",textAlign: "center", top : -70}} >Restore Password</Header>
       <TextInput
         label="E-mail address"
         returnKeyType="done"
@@ -45,6 +58,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         onChangeText={(text) => setEmail({ value: text, error: '' })}
         error={!!email.error}
         errorText={email.error}
+        style = {{top : -20}}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"

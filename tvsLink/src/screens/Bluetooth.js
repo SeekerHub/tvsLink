@@ -1,43 +1,58 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import ProgressCircle from 'react-native-progress/Circle';
-import Button from '../components/Button'
+import React, { useEffect, useRef } from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import LottieView from 'lottie-react-native';
 import Background from '../components/Background'
 import Header from '../components/Header'
-import TextInput from '../components/TextInput'
 import Logo from '../components/Logo_page'
-import { Feather } from '@expo/vector-icons';
+import {
+  useFonts,
+  Ubuntu_300Light,
+  Ubuntu_300Light_Italic,
+  Ubuntu_400Regular,
+  Ubuntu_400Regular_Italic,
+  Ubuntu_500Medium,
+  Ubuntu_500Medium_Italic,
+  Ubuntu_700Bold,
+  Ubuntu_700Bold_Italic
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
-const Bluetooth = ({ navigation }) => {
+const Success = ({ navigation }) => {
+  const animation = useRef(null)
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_500Medium,
+    Ubuntu_500Medium_Italic,
+    Ubuntu_700Bold,
+  })
+
   setTimeout(() => {
-        navigation.replace('OBD_details');
-    },5000);
-    {alert('Please turn on Bluetooth')};
+      navigation.navigate('OBD_details');
+  },2000);
+
+  useEffect(() => {
+    animation.current.play();
+  })
+
   return (
-
+    <View style={styles.animationContainer}>
     <Background>
-      <View style = {styles.logo}><Logo /></View>
-      <View style = {styles.head} >
-      <Header>
-      Connecting to the OBD device
-      Please Turn on Your Bluetooth</Header>
-      </View >
-      <View style = {styles.bluetooth}>
-      <Feather name="bluetooth" size={104} color="black" />
-      </View>
+    <View style = {styles.logo}><Logo /></View>
+    <Header style = {{ fontFamily: 'Ubuntu_500Medium', fontSize : 25, textAlignVertical: "center",textAlign: "center", top : -250}}>
+    Connecting to the OBD device
+    Please Turn on Your Bluetooth</Header>
+       <LottieView  ref={animation} source={require('../assets/bluetooth_per.json')} />
     </Background>
-
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  head :{
-    top : 0,
-    marginBottom: 10,
-  },
-  bluetooth :{
-    marginBottom: 30,
+  animationContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   logo : {
     ...StyleSheet.absoluteFillObject,
@@ -46,5 +61,4 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 });
-
-export default Bluetooth;
+ export default Success;

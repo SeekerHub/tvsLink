@@ -1,9 +1,29 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
+import {
+  useFonts,
+  Ubuntu_300Light,
+  Ubuntu_300Light_Italic,
+  Ubuntu_400Regular,
+  Ubuntu_400Regular_Italic,
+  Ubuntu_500Medium,
+  Ubuntu_500Medium_Italic,
+  Ubuntu_700Bold,
+  Ubuntu_700Bold_Italic
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
-function UserCard(props) {
+const UserCard = (props) => {
+  const [fontsLoaded, error] = useFonts({
+    Ubuntu_400Regular,
+    Ubuntu_500Medium,
+    Ubuntu_500Medium_Italic,
+    Ubuntu_700Bold,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
-    <View style={styles.container}>
       <View style={styles.rect}>
         <View style={styles.imageRow}>
           <Image
@@ -11,8 +31,8 @@ function UserCard(props) {
             resizeMode="cover"
             style={styles.image}
           ></Image>
-          <View style={styles.nameColumn}>
-            <Text style={styles.name}>Bhavesh Gandhi</Text>
+          <View style={styles.bhaveshGandhiColumn}>
+            <Text style={styles.bhaveshGandhi}>Bhavesh Gandhi</Text>
             <Text style={styles.user}>User</Text>
           </View>
         </View>
@@ -24,8 +44,11 @@ function UserCard(props) {
         <Text style={styles.modelTvsNtorq}>
           Model : TVS Ntorq (Race Edition)
         </Text>
-        <Text style={styles.manufacture2019}>Manufacture : 2019</Text>
-        <View style={styles.manufacture2020Stack}>
+        <View style={styles.manufacture2019Stack}>
+          <Text style={styles.manufacture2019}>Manufacture : 2019</Text>
+          <Text style={styles.loremIpsum}></Text>
+        </View>
+        <View style={styles.manufacture2020Row}>
           <Text style={styles.manufacture2020}></Text>
           <Text style={styles.manufacture2021}>Year Of Purchase : 2020</Text>
         </View>
@@ -35,108 +58,121 @@ function UserCard(props) {
           <Text style={styles.verified}>Verified</Text>
         </View>
       </View>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 0
-  },
   rect: {
-    width: 323,
+    width: 317,
     height: 432,
     borderWidth: 1,
     borderColor: "rgba(211,210,210,1)",
-    borderRadius: 9,
-    opacity: 20,
-    backgroundColor: "#E8E8E8",
+    borderRadius: 17,
+    backgroundColor: "rgba(28,42,56,1)",
   },
   image: {
     width: 62,
     height: 62,
     borderWidth: 1,
     borderColor: "rgba(184,178,178,1)",
-    borderRadius: 100
+    borderRadius: 100,
+    backgroundColor: "rgba(15,15, 15,1)"
   },
-  name: {
-    color: "#121212",
+  bhaveshGandhi: {
+    fontFamily: "Ubuntu_500Medium",
+    color: "rgba(247,246,237,1)",
     fontSize: 20
   },
   user: {
-    color: "#121212",
-    marginTop: 3,
-    marginLeft: 3
+    fontFamily: "Ubuntu_500Medium",
+    color: "rgba(251,251,250,1)"
   },
-  nameColumn: {
-    width: 147,
-    marginLeft: 23,
+  bhaveshGandhiColumn: {
+    width: 148,
+    marginLeft: 32,
     marginTop: 7,
-    marginBottom: 12
+    marginBottom: 15
   },
   imageRow: {
     height: 62,
     flexDirection: "row",
-    marginTop: 13,
-    marginLeft: 13,
-    marginRight: 78
+    marginTop: 8,
+    marginLeft: 8,
+    marginRight: 67
   },
   image2: {
     width: 296,
     height: 195,
-    borderRadius: 14,
-    opacity: 0.86,
+    borderRadius: 21,
     backgroundColor: "rgba(210,78,78,0.39)",
     marginTop: 11,
-    marginLeft: 13
+    marginLeft: 10
   },
   modelTvsNtorq: {
-    color: "#121212",
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(236,236,243,1)",
     marginTop: 16,
-    marginLeft: 19
+    marginLeft: 28
   },
   manufacture2019: {
-    color: "#121212",
-    marginTop: 8,
-    marginLeft: 20
-  },
-  manufacture2020: {
-    top: 8,
-    left: 0,
-    position: "absolute",
-    color: "#121212"
-  },
-  manufacture2021: {
     top: 0,
     left: 0,
     position: "absolute",
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(237,223,223,1)"
+  },
+  loremIpsum: {
+    top: 9,
+    left: 74,
+    position: "absolute",
+    fontFamily: "Ubuntu_700Bold",
     color: "#121212"
   },
-  manufacture2020Stack: {
-    width: 149,
+  manufacture2019Stack: {
+    width: 128,
     height: 16,
     marginTop: 10,
-    marginLeft: 19
+    marginLeft: 28
   },
-  mIlage47KmL: {
+  manufacture2020: {
+    fontFamily: "Ubuntu_700Bold",
     color: "#121212",
-    marginTop: 8,
+    marginTop: 8
+  },
+  manufacture2021: {
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(243,236,236,1)",
     marginLeft: 20
   },
-  status2: {
-    color: "#121212"
-  },
-  verified: {
-    color: "rgba(92,164,86,1)",
-    fontSize: 14,
-    marginLeft: 7
-  },
-  status2Row: {
+  manufacture2020Row: {
     height: 16,
     flexDirection: "row",
+    marginTop: 8,
+    marginLeft: 8,
+    marginRight: 133
+  },
+  mIlage47KmL: {
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(235,201,201,1)",
+    marginTop: 8,
+    marginLeft: 29
+  },
+  status2: {
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(255,255,255,1)"
+  },
+  verified: {
+    fontFamily: "Ubuntu_700Bold",
+    color: "rgba(92,164,86,1)",
+    fontSize: 15,
+    marginLeft: 4
+  },
+  status2Row: {
+    height: 17,
+    flexDirection: "row",
     marginTop: 11,
-    marginLeft: 20,
-    marginRight: 199
+    marginLeft: 28,
+    marginRight: 177
   }
 });
 

@@ -13,6 +13,11 @@ import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator } from '../helpers/nameValidator'
 import { signInUser } from '../api/auth-api'
 import Toast from '../components/Toast'
+import {
+  useFonts,
+  Ubuntu_500Medium,
+} from '@expo-google-fonts/ubuntu'
+import AppLoading from 'expo-app-loading';
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState({ value: '', error: '' })
@@ -20,7 +25,12 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState({ value: '', error: '' })
   const [loading, setLoading] = useState()
   const [error, setError] = useState()
-
+  const [fontsLoaded, err] = useFonts({
+    Ubuntu_500Medium,
+  })
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   const onSignUpPressed = async () => {
     const nameError = nameValidator(name.value)
     const emailError = emailValidator(email.value)
@@ -46,8 +56,9 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <View styles = {styles.logo}><Logo /></View>
-      <Header>Create Account</Header>
+      <View style = {{ top : -80}}><Logo /></View>
+      <Header style = {{ fontFamily: 'Ubuntu_500Medium', fontSize : 35, textAlignVertical: "center",textAlign: "center", top : -70}}>Create Account</Header>
+      <View style = {{ top : -20, width : '100%'}}>
       <TextInput
         label="Name"
         returnKeyType="next"
@@ -77,11 +88,12 @@ const RegisterScreen = ({ navigation }) => {
         errorText={password.error}
         secureTextEntry
       />
+      </View>
       <Button
         loading={loading}
         mode="contained"
         onPress={onSignUpPressed}
-        style={{ marginTop: 24 }}
+        style={{ top: 70 }}
       >
         Sign Up
       </Button>
@@ -97,15 +109,10 @@ const RegisterScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  logo : {
-    ...StyleSheet.absoluteFillObject,
-    alignSelf: 'flex-start',
-    marginTop: 15,
-    position: 'absolute',
-  },
   row: {
     flexDirection: 'row',
-    marginTop: 4,
+    marginTop: 0,
+    top : -30
   },
   link: {
     fontWeight: 'bold',

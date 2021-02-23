@@ -10,3 +10,8 @@ export { default as OBD_details } from './OBD_details';
 export { default as Validate_ID } from './Validate_ID';
 export { default as Home } from './Home';
 export { default as SplashScreen } from './SplashScreen';
+export { default as Success } from './Success';
+export { default as Success_chasis } from './Success_chasis';
+export { default as Success_details } from './Success_details';
+export { default as About } from './About';
+export { default as Profile } from './Profile';

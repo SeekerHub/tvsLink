@@ -25,6 +25,11 @@ import {
   Validate_ID,
   Home,
   SplashScreen,
+  Success,
+  Success_details,
+  Success_chasis,
+  About,
+  Profile,
 
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
@@ -51,6 +56,9 @@ const Main = () => {
             name="AuthLoadingScreen"
             component={AuthLoadingScreen}
           />
+          <Stack.Screen name="Success_chasis" component={Success_chasis} />
+          <Stack.Screen name="Success_details" component={Success_details} />
+          <Stack.Screen name="Success" component={Success} />
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
@@ -77,6 +85,8 @@ const App = () => {
       <Drawer.Navigator initialRouteName="Main">
         <Drawer.Screen name="Main" component={Main} />
         <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="About" component={About} />
+        <Drawer.Screen name="Profile" component={Profile} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
