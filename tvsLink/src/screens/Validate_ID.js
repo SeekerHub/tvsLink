@@ -53,7 +53,7 @@ const Validate_ID = ({navigation}) => {
               method: 'POST',
               body: formData,
               headers: {
-                Apikey: "96462e4a0e88957",
+                Apikey: "96462e4a0e88957", // Replace this api key with your own key just sign in to ocr space and grab the key
                 'content-type': 'multipart/form-data',
               },
             })
