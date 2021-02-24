@@ -22,7 +22,7 @@ import {
 import AppLoading from 'expo-app-loading';
 
 
-const Chasis = ({navigation}) => {
+const Chasis = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imgSrc, setImgSrc] = useState(null);

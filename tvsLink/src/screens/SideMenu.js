@@ -46,22 +46,15 @@ const SideMenu = (props) => {
                     </View>
                     <View style={styles.row}>
                         <View style={styles.section}>
+                            <Icon name="star-four-points" style={{color:'yellow', marginRight : 10}} />
                             <Paragraph style={[styles.paragraph, styles.caption]}>200</Paragraph>
-                            <Caption style={styles.caption}>Following</Caption>
-                        </View>
-                        <View style={styles.section}>
-                            <Paragraph style={[styles.paragraph, styles.caption]}>10</Paragraph>
-                            <Caption style={styles.caption}>Followers</Caption>
+                            <Caption style={styles.caption}>Points</Caption>
                         </View>
                     </View>
                 </View>
                 {/* Drawer Section */}
                 <Drawer.Section>
-                <DrawerItem
-                    icon = { ()=> ( <Icon name="home-outline" style={{fontSize:2.8*vh,color:'grey'}} />  ) }
-                    label="Main"
-                    onPress={ ()=>{props.navigation.navigate('Main')} }
-                />
+
                     <DrawerItem
                         icon = { ()=> ( <Icon name="home-outline" style={{fontSize:2.8*vh,color:'grey'}} />  ) }
                         label="Home"
@@ -71,6 +64,7 @@ const SideMenu = (props) => {
                     <DrawerItem
                         icon = { ()=> ( <Icon name="account-outline" style={{fontSize:2.8*vh,color:'grey'}} />  ) }
                         label="About"
+                        style = {{fontFamily: 'Ubuntu_500Medium'}}
                         onPress={ ()=>{props.navigation.navigate('About')} }
                     />
 
@@ -119,7 +113,6 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 2*vh,
       marginTop: 3,
-      fontWeight: 'bold',
       color: '#DCE1E5',
       fontFamily: 'Ubuntu_500Medium',
     },
@@ -127,11 +120,13 @@ const styles = StyleSheet.create({
       fontSize: 14,
       lineHeight: 14,
       color: 'white',
+      fontFamily: 'Ubuntu_500Medium',
     },
     caption: {
       fontSize: 14,
       lineHeight: 14,
-      color: "#798894"
+      color: "#798894",
+      fontFamily: 'Ubuntu_500Medium',
     },
     row: {
       marginTop: 2*vh,
@@ -143,6 +138,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       marginRight: 1.5*vh,
+      fontFamily: 'Ubuntu_500Medium',
     },
     paragraph: {
       fontWeight: 'bold',
